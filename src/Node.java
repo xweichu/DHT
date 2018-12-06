@@ -54,6 +54,25 @@ public class Node {
             predecessor = this;
 
         }
+
+        Map<Integer,String> successorMap = this.getSuccessor().getLocalKeys();
+        Map<Integer,String> myMap = this.getLocalKeys();
+        List<Integer> keys = new ArrayList<>();
+
+        for(Integer key: successorMap.keySet()){
+            if(key <= this.getId()){
+                String val = successorMap.get(key);
+                myMap.put(key,val);
+                keys.add(key);
+            }
+        }
+        
+        for(int i = 0; i< keys.size(); i++){
+            successorMap.remove(keys.get(i));
+        }
+
+
+
     }
 
     public void init_finger_table(Node nodeP){
@@ -86,13 +105,15 @@ public class Node {
 
     public void update_finger_table(Node s , int i){
 
-        if(check_range_left_close(s.getId(),fingerTable.getEntry(i).getStart(), fingerTable.getEntry(i).getNode().getId())){
+        if(check_range_left_close_2(s.getId(),fingerTable.getEntry(i).getStart(), fingerTable.getEntry(i).getNode().getId())){
             fingerTable.getEntry(i).setNode(s);
             Node p = predecessor;
             p.update_finger_table(s,i);
         }
 
     }
+
+
 
 
     public Node find_predecessor(int id){
@@ -186,6 +207,14 @@ public class Node {
         }
 
         return false;
+    }
+
+    public boolean check_range_left_close_2(int target, int left, int right){
+
+        if(left == right) return false;
+
+        return check_range_left_close(target,left,right);
+
     }
 
 

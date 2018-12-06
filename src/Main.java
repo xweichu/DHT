@@ -22,7 +22,14 @@ public class Main {
 
         nd8.join(nd);
         nd4.join(nd);
-//        nd115.join(nd8);
+
+
+        for(int i = 1;i<200; i++){
+            nd4.insert(i,"www"+i);
+        }
+
+
+        nd115.join(nd8);
 
         nd8.insert(2, "sss");
 
@@ -49,11 +56,16 @@ public class Main {
         nd4.getFingerTable().prettyPrint();
         System.out.println("----------");
         nd8.getFingerTable().prettyPrint();
+        System.out.println("----------");
+        nd115.getFingerTable().prettyPrint();
+
 
         System.out.println(nd.getLocalKeys().toString());
         System.out.println(nd4.getLocalKeys().toString());
         System.out.println(nd8.getLocalKeys().toString());
         System.out.println(traces);
+
+
 
 //        System.out.println("----------");
 //        nd115.getFingerTable().prettyPrint();
