@@ -8,6 +8,7 @@ public class Node {
     private Map<Integer,String> localKeys;
 
 
+
     public Node(int id){
         this.id = id;
         predecessor = this;
@@ -108,6 +109,23 @@ public class Node {
         return  n_p.getSuccessor();
     }
 
+
+    public Node find_successor(int id, List<Integer> traces){
+        Node n_p = find_predecessor(id, traces);
+        return  n_p.getSuccessor();
+    }
+
+    public Node find_predecessor(int id, List<Integer> traces){
+        Node nodeP = this;
+        while(!check_range_right_close(id, nodeP.getId(), nodeP.getSuccessor().getId())){
+            nodeP = nodeP.closest_preceding_finger(id);
+            traces.add(nodeP.getId());
+        }
+        return nodeP;
+    }
+
+
+
     public Node closest_preceding_finger(int id){
 
         for(int i = 8; i>0;i--){
@@ -192,9 +210,14 @@ public class Node {
         mp.remove(key);
     }
 
-    public Node find(int key){
+    public List<Integer> find(int key){
 
-        Node target = this.find_successor(key);
+        List<Integer> traces = new ArrayList<>();
+        traces.add(this.getId());
+        Node target = this.find_successor(key,traces);
+        traces.add(target.getId());
+
+        return traces;
     }
 
 

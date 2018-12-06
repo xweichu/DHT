@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Main {
 
     public static void main(String[] args){
@@ -28,6 +30,10 @@ public class Main {
 
         nd.remove(112);
 
+        List<Integer> traces =  nd8.find(2);
+
+
+
 
 
 
@@ -47,6 +53,7 @@ public class Main {
         System.out.println(nd.getLocalKeys().toString());
         System.out.println(nd4.getLocalKeys().toString());
         System.out.println(nd8.getLocalKeys().toString());
+        System.out.println(traces);
 
 //        System.out.println("----------");
 //        nd115.getFingerTable().prettyPrint();
