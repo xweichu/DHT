@@ -66,10 +66,14 @@ public class Node {
                 keys.add(key);
             }
         }
-        
+
         for(int i = 0; i< keys.size(); i++){
+            if(i == 0) System.out.println("The following keys are migrated:");
+            System.out.print(keys.get(i) + " ");
             successorMap.remove(keys.get(i));
+            if(i==keys.size()-1) System.out.println("");
         }
+
 
 
 

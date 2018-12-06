@@ -3,14 +3,7 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args){
-
-//        FingerTable ft = new FingerTable(6);
-//        ft.prettyPrint();
-
-//        Node nd = new Node(6);
-//        nd.getFingerTable().prettyPrint();
-//        nd.join(null);
-//        nd.getFingerTable().prettyPrint();
+        
 
         Node nd = new Node(1);
         nd.join(null);
@@ -36,6 +29,9 @@ public class Main {
         nd4.insert(112,"fwfwew");
 
         nd.remove(112);
+
+        Node nd168 = new Node(168);
+        nd168.join(nd8);
 
         List<Integer> traces =  nd8.find(2);
 
