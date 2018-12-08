@@ -8,7 +8,6 @@ public class Node {
     private Map<Integer,String> localKeys;
 
 
-
     public Node(int id){
         this.id = id;
         predecessor = this;
@@ -42,7 +41,8 @@ public class Node {
     }
 
 
-    public void join(Node nodeP){
+    public List<Integer> join(Node nodeP){
+
         if(nodeP != null){
             init_finger_table(nodeP);
             update_others();
@@ -60,7 +60,7 @@ public class Node {
         List<Integer> keys = new ArrayList<>();
 
         for(Integer key: successorMap.keySet()){
-            if(key <= this.getId()){
+            if(check_range_right_close(key,this.predecessor.getId(),this.getId())){
                 String val = successorMap.get(key);
                 myMap.put(key,val);
                 keys.add(key);
@@ -68,14 +68,12 @@ public class Node {
         }
 
         for(int i = 0; i< keys.size(); i++){
-            if(i == 0) System.out.println("The following keys are migrated:");
-            System.out.print(keys.get(i) + " ");
             successorMap.remove(keys.get(i));
-            if(i==keys.size()-1) System.out.println("");
         }
 
+        Collections.sort(keys);
 
-
+        return keys;
 
     }
 
@@ -102,7 +100,9 @@ public class Node {
 
     public void update_others(){
         for(int i = 1 ; i < 9; i++){
-            Node p = find_predecessor((int)(this.getId() - Math.pow(2,i-1))+1);
+            int p_id = (int)(this.getId() - Math.pow(2,i-1))+1;
+            if(p_id<0) p_id = p_id + 255;
+            Node p = find_predecessor(p_id);
             p.update_finger_table(this, i);
         }
     }
@@ -235,7 +235,6 @@ public class Node {
         mp.put(key,value);
     }
 
-
     public void remove(int key){
 
         Node target = this.find_successor(key);
@@ -249,11 +248,60 @@ public class Node {
         traces.add(this.getId());
         Node target = this.find_successor(key,traces);
         traces.add(target.getId());
-
         return traces;
     }
 
 
+    public List<Integer> leave(){
 
+        Map<Integer,String> successorMap = this.getSuccessor().getLocalKeys();
+        Map<Integer,String> myMap = this.getLocalKeys();
+
+        List<Integer> keys = new ArrayList<>();
+
+        for(Integer key: myMap.keySet()){
+            keys.add(key);
+            String val = myMap.get(key);
+            successorMap.put(key,val);
+        }
+
+        this.getSuccessor().setPredecessor(this.predecessor);
+        update_others_leave();
+
+        Collections.sort(keys);
+
+        return keys;
+
+    }
+
+    public void update_others_leave(){
+        for(int i = 1 ; i < 9; i++){
+            int p_id = (int)(this.getId() - Math.pow(2,i-1))+1;
+            if(p_id<0) p_id = p_id + 255;
+            Node p = find_predecessor(p_id);
+            p.update_finger_table_leave(this, i);
+        }
+    }
+
+    public void update_finger_table_leave(Node s , int i){
+
+        if(fingerTable.getEntry(i).getNode().getId() == s.getId()){
+            fingerTable.getEntry(i).setNode(s.getSuccessor());
+            Node p = predecessor;
+            p.update_finger_table_leave(s,i);
+        }
+
+    }
+
+    public void printTableAndKeys(){
+        this.fingerTable.prettyPrint();
+        System.out.println("Keys stored in the node:");
+        List<Integer> keys = new ArrayList<>();
+        for(Integer key: this.getLocalKeys().keySet()){
+            keys.add(key);
+        }
+        Collections.sort(keys);
+        System.out.println(keys);
+    }
 
 }

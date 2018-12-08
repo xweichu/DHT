@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class FingerTable {
 
         private int nodeId;
@@ -18,13 +16,14 @@ public class FingerTable {
 
         public TableEntry getEntry(int index){
 
-//            System.out.println(index);
             return fingerEntries[index];
         }
 
         // TODO: complete print function
 
         public void prettyPrint() {
+
+            System.out.println("\n-----FingerTable of Node:"+String.format("%03d",this.nodeId)+"-----");
 
             for(int i = 1; i<9; i++){
 
