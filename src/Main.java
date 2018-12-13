@@ -2,9 +2,40 @@ import java.util.*;
 
 public class Main {
 
+
+    private static int getRandomNumberInRange(int min, int max) {
+
+        if (min >= max) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
+    }
+
     public static void main(String[] args){
 
-        //Test case 1: create eight nodes with id of 2, 5, 203, 55, 177
+//
+////        Node nd_255 = new Node(255);
+////        nd_255.insert(0,"");
+////        nd_255.insert(255,"");
+////        nd_255.insert(62,"");
+////        nd_255.insert(63,"");
+////        nd_255.insert(64,"");
+////
+////
+////
+////        Node nd_63 = new Node(63);
+////        nd_63.join(nd_255);
+////
+////
+////
+////
+////        nd_63.printTableAndKeys();
+////        nd_255.printTableAndKeys();
+//
+//
+       // Test case 1: c3
 
         Node node_2 = new Node(2);
         Node node_102 = new Node(102);
@@ -18,48 +49,100 @@ public class Main {
 
         // The nodes join the network and insert keys
 
+        List<Integer> all_keys = new ArrayList<>();
+
+        List<Integer> join_keys = new ArrayList<>();
         node_55.join(null);
         for(int i=0; i<10; i++){
-            node_55.insert(i,"");
+            int gen = ((i+1)*8+3)*9%255;
+            join_keys.add(gen);
+            node_55.insert(gen,"");
         }
+        all_keys.addAll(join_keys);
+        System.out.println("Node 055 joins, and 10 keys are inserted via this node:"+join_keys);
 
 
+        join_keys = new ArrayList<>();
         node_177.join(node_55);
         for(int i=33; i<43; i++){
-            node_177.insert(i,"");
+            int gen = ((i+1)*7+3)*5%255;
+            join_keys.add(gen);
+            node_177.insert(gen,"");
         }
+        all_keys.addAll(join_keys);
+        System.out.println("Node 177 joins, and 10 keys are inserted via this node:"+join_keys);
 
 
+        join_keys = new ArrayList<>();
         node_2.join(node_177);
         for(int i=75; i<85; i++){
-            node_2.insert(i,"");
+
+            int gen = ((i+5)*7+8)*8%255;
+            join_keys.add(gen);
+            node_2.insert(gen,"");
         }
+        all_keys.addAll(join_keys);
+        System.out.println("Node 002 joins, and 10 keys are inserted via this node:"+join_keys);
 
 
+        join_keys = new ArrayList<>();
         node_203.join(node_177);
         for(int i=142; i<152; i++){
-            node_203.insert(i,"");
-        }
 
+            int gen = ((i+2)*2+3)*9%255;
+            join_keys.add(gen);
+            node_203.insert(gen,"");
+        }
+        all_keys.addAll(join_keys);
+        System.out.println("Node 203 joins, and 10 keys are inserted via this node:"+join_keys);
+
+        join_keys = new ArrayList<>();
         node_102.join(node_2);
         for(int i=203; i<213; i++){
-            node_102.insert(i,"");
-        }
 
+            int gen = ((i+8)*9+3)*2%255;
+            join_keys.add(gen);
+            node_102.insert(gen,"");
+        }
+        all_keys.addAll(join_keys);
+        System.out.println("Node 102 joins, and 10 keys are inserted via this node:"+join_keys);
+
+        join_keys = new ArrayList<>();
         node_23.join(node_102);
         for(int i=234; i<244; i++){
-            node_23.insert(i,"");
-        }
 
+            int gen = ((i+8)*6+1)*5%255;
+            join_keys.add(gen);
+            node_23.insert(gen,"");
+        }
+        all_keys.addAll(join_keys);
+        System.out.println("Node 023 joins, and 10 keys are inserted via this node:"+join_keys);
+
+        join_keys = new ArrayList<>();
         node_155.join(node_203);
         for(int i=123; i<133; i++){
-            node_155.insert(i,"");
-        }
 
+            int gen = ((i+8)*2+3)*3%255;
+            join_keys.add(gen);
+            node_155.insert(gen,"");
+        }
+        all_keys.addAll(join_keys);
+        System.out.println("Node 155 joins, and 10 keys are inserted via this node:"+join_keys);
+
+        join_keys = new ArrayList<>();
         node_235.join(node_2);
         for(int i=61; i<71; i++){
-            node_235.insert(i,"");
+
+            int gen = ((i+5)*2+3)*5%255;
+            join_keys.add(gen);
+            node_235.insert(gen,"");
         }
+        all_keys.addAll(join_keys);
+        System.out.println("Node 235 joins, and 10 keys are inserted via this node:"+join_keys);
+
+        Collections.sort(all_keys);
+
+//        System.out.println("All keys:"+all_keys);
 
 
         System.out.println("\nRubric 1 test, build finger table correctly:");
@@ -96,6 +179,16 @@ public class Main {
         System.out.println("Keys migrated to its successor when node 203 leaving:" + leave_traces_2);
 
 
+        join_keys = new ArrayList<>();
+        for(int i=186; i<199; i++) {
+            int gen = ((i+9)*9+8)*3%255;
+            join_keys.add(gen);
+            node_177.insert(gen,"");
+        }
+
+        Collections.sort(join_keys);
+        System.out.println("Keys inserted after nodes leaving:"+join_keys);
+
         System.out.println("\nFinal status of the DHT:");
         node_2.printTableAndKeys();
         node_23.printTableAndKeys();
@@ -107,6 +200,7 @@ public class Main {
         node_235.printTableAndKeys();
 
 
+        List<Integer> random_keys = new ArrayList<>();
 
         //Randomly Generate 5 nodes, and make them sparse evenly in the ring with the range of 0-255;
 
@@ -122,8 +216,10 @@ public class Main {
         }
 
         // Let's insert all possible keys via a random node:
-        for(int i=0; i<256; i++){
-            node_list[new Random().nextInt(5)].insert(i,"");
+        for(int i=0; i<100; i++){
+            int gen = getRandomNumberInRange(0,255);
+            random_keys.add(gen);
+            node_list[new Random().nextInt(5)].insert(gen,"");
         }
 
         //Print the DHT:
@@ -133,9 +229,9 @@ public class Main {
         }
 
         Node rdm_node = node_list[new Random().nextInt(5)];
-        int rdm_key = new Random().nextInt(255);
-        List<Integer> rdm_traces = rdm_node.find(rdm_key);
-        System.out.println("\nFind a random "+rdm_key+" via a random node "+rdm_node.getId()+" in the ring:"+ rdm_traces);
+        int rdm_key = new Random().nextInt(99);
+        List<Integer> rdm_traces = rdm_node.find(random_keys.get(rdm_key));
+        System.out.println("\nFind a random number "+random_keys.get(rdm_key)+" via a random node "+rdm_node.getId()+" in the ring:"+ rdm_traces);
 
         //Join 2 random nodes via existing random nodes:
         Node[] new_nodes = new Node[2];
@@ -153,6 +249,16 @@ public class Main {
         rdm_trace = node_list[rdm_leave].leave();
         System.out.println("Keys migrated to its successor when node "+node_list[rdm_leave].getId()+" leaving:" + rdm_trace);
 
+
+        List<Integer> leave_insert_keys = new ArrayList<>();
+        for(int i=0; i<10; i++){
+            int gen = getRandomNumberInRange(0,255);
+            leave_insert_keys.add(gen);
+            node_list[new Random().nextInt(5)].insert(gen,"");
+        }
+        System.out.println("Insert 10 keys after nodes left:" + leave_insert_keys);
+
+
         //Print final status of DHT:
         System.out.println("\n\nFinal status of DHT:");
         for(int i = 0; i<5; i++){
@@ -164,11 +270,6 @@ public class Main {
         for(int i =0; i<2; i++){
             new_nodes[i].printTableAndKeys();
         }
-
-
-
-
-
 
 
 

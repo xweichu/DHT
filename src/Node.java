@@ -243,8 +243,13 @@ public class Node {
     }
 
     public List<Integer> find(int key){
-
         List<Integer> traces = new ArrayList<>();
+        if(this.getLocalKeys().containsKey(key)) {
+            traces.add(this.getId());
+            return traces;
+        }
+
+//        List<Integer> traces = new ArrayList<>();
         traces.add(this.getId());
         Node target = this.find_successor(key,traces);
         traces.add(target.getId());
